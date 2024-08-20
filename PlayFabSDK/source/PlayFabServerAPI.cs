@@ -1420,7 +1420,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves the unique PlayFab identifiers for the given set of server cusotm identifiers.
         /// </summary>
-        public static async Task<PlayFabResult<GetPlayFabIDsFromServerCustomIDsResult>> GetPlayFabIDsFromXboxLiveIDsAsync(GetPlayFabIDsFromServerCustomIDsRequest request, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static async Task<PlayFabResult<GetPlayFabIDsFromServerCustomIDsResult>> GetPlayFabIDsFromServerCustomIDsAsync(GetPlayFabIDsFromServerCustomIDsRequest request, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             await new PlayFabUtil.SynchronizationContextRemover();
 
