@@ -1416,6 +1416,33 @@ namespace PlayFab
 
             return new PlayFabResult<GetPlayFabIDsFromXboxLiveIDsResult> { Result = result, CustomData = customData };
         }
+        
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of server cusotm identifiers.
+        /// </summary>
+        public static async Task<PlayFabResult<GetPlayFabIDsFromServerCustomIDsResult>> GetPlayFabIDsFromXboxLiveIDsAsync(GetPlayFabIDsFromServerCustomIDsRequest request, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            await new PlayFabUtil.SynchronizationContextRemover();
+
+            var requestContext = request?.AuthenticationContext ?? PlayFabSettings.staticPlayer;
+            var requestSettings = PlayFabSettings.staticSettings;
+            if (requestSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "DeveloperSecretKey must be set in your local or global settings to call this method");
+
+
+            var httpResult = await PlayFabHttp.DoPost("/Server/GetPlayFabIDsFromServerCustomIDs", request, "X-SecretKey", requestSettings.DeveloperSecretKey, extraHeaders);
+            if (httpResult is PlayFabError)
+            {
+                var error = (PlayFabError)httpResult;
+                PlayFabSettings.GlobalErrorHandler?.Invoke(error);
+                return new PlayFabResult<GetPlayFabIDsFromServerCustomIDsResult> { Error = error, CustomData = customData };
+            }
+
+            var resultRawJson = (string)httpResult;
+            var resultData = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetPlayFabIDsFromServerCustomIDsResult>>(resultRawJson);
+            var result = resultData.data;
+
+            return new PlayFabResult<GetPlayFabIDsFromServerCustomIDsResult> { Result = result, CustomData = customData };
+        }
 
         /// <summary>
         /// Retrieves the key-value store of custom publisher settings

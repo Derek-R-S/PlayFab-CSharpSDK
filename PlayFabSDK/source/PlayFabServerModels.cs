@@ -3613,6 +3613,28 @@ namespace PlayFab.ServerModels
         public List<XboxLiveAccountPlayFabIdPair> Data ;
 
     }
+    
+    public class GetPlayFabIDsFromServerCustomIDsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Array of unique server custom identifiers for which the title needs to get PlayFab player identifiers. The array cannot
+        /// exceed 2,000 in length.
+        /// </summary>
+        public List<string> ServerCustomIds ;
+
+    }
+
+    /// <summary>
+    /// For a ServerCustomId account that isn't associated with a server custom identity, PlayFab will be null.
+    /// </summary>
+    public class GetPlayFabIDsFromServerCustomIDsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Mapping of server custom player identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<ServerCustomIDPlayFabIDPair> Data ;
+
+    }
 
     /// <summary>
     /// This API is designed to return publisher-specific values which can be read, but not written to, by the client. This data
